@@ -2,22 +2,31 @@ import React, { useState } from 'react';
 
 function CartItem({ item, onUpdateQuantity, onRemove }) {
   const [isRemoving, setIsRemoving] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleRemove = () => {
     setIsRemoving(true);
     setTimeout(() => onRemove(item.id), 300);
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className={`flex items-center gap-3 p-3 bg-white/50 rounded-xl border border-sky-100/50 transition-all duration-300 ${isRemoving ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-      <img 
-        src={item.image} 
-        alt={item.title} 
-        className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border border-sky-100 shadow-sm"
-        onError={(e) => {
-          e.target.src = "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop";
-        }}
-      />
+      {!imageError ? (
+        <img 
+          src={item.image} 
+          alt={item.title} 
+          className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border border-sky-100 shadow-sm"
+          onError={handleImageError}
+        />
+      ) : (
+        <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center bg-sky-100 rounded-lg border border-sky-200">
+          <div className="text-sky-600 text-xs text-center">No Image</div>
+        </div>
+      )}
       <div className="flex-1 min-w-0">
         <div className="font-semibold text-sky-900 text-sm sm:text-base truncate">{item.title}</div>
         <div className="text-xs sm:text-sm text-sky-700">

@@ -28,9 +28,8 @@ function AdminPanel({
         <select value={adminForm.category} onChange={(e)=>setAdminForm(f=>({...f,category:e.target.value}))} className={INPUT_CLASS}>
           {CATEGORIES.filter((c)=>c!=="All").map((c)=>(<option key={c}>{c}</option>))}
         </select>
-        <input value={adminForm.imageURL} onChange={(e)=>setAdminForm(f=>({...f,imageURL:e.target.value}))} placeholder="Image URL (optional)" className={INPUT_CLASS} />
         <div>
-          <label className="block text-xs font-medium text-sky-700 mb-1">Or upload image:</label>
+          <label className="block text-xs font-medium text-sky-700 mb-1">Upload product image:</label>
           <input type="file" accept="image/*" onChange={(e)=>setAdminForm(f=>({...f,imageFile:e.target.files?.[0]}))} className="w-full text-xs text-sky-700" />
         </div>
         <div>

@@ -1,21 +1,137 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { SAMPLE_PRODUCTS } from './data/constants';
-import { useLocalStorage } from './hooks/useLocalStorage';
 
-// Components
-import Navigation from './components/Navigation';
-import HeroSection from './components/HeroSection';
-import AdminPanel from './components/AdminPanel';
-import Filters from './components/Filters';
-import ProductCard from './components/ProductCard';
-import CartSidebar from './components/cartSidebar';
-import CheckoutModal from './components/CheckoutModal';
-import OrderToast from './components/OrderToast';
-import Footer from './components/Footer';
-import LoadingSpinner from './components/LoadingSpinner';
+// Import your local images directly
+import marriageFrame from "./assets/Marriage_memo.png";
+import petFrame from "./assets/frame_1.png";
+import babyFrame from "./assets/baby_memories.png";
+import resinClock from "./assets/clock_2.png";
+import heartCoasters from "./assets/heart_calender.png";
+import customGift from "./assets/custom_gift.png";
+import miniAlbums from "./assets/mini_albums.png";
+import KeyChain from "./assets/key_chain.png";
+
+
+// Sample products with ONLY local images
+const SAMPLE_PRODUCTS = [
+  { 
+    id: "f1", 
+    title: "Marriage Memory Frame", 
+    category: "Frames", 
+    price: 1299, 
+    originalPrice: 1499,
+    description: "Elegant resin frame perfect for wedding memories.", 
+    image: marriageFrame
+  },
+  { 
+    id: "f2", 
+    title: "Pet Memory Frame", 
+    category: "Frames", 
+    price: 899, 
+    originalPrice: 1099,
+    description: "Cherish your pet memories in this beautiful frame.", 
+    image: petFrame
+  },
+  { 
+    id: "f3", 
+    title: "Baby Memories Frame", 
+    category: "Frames", 
+    price: 999, 
+    description: "Preserve precious baby moments in resin.", 
+    image: babyFrame
+  },
+  { 
+    id: "c1", 
+    title: "Geode Resin Desk Clock", 
+    category: "Clocks", 
+    price: 1599, 
+    originalPrice: 1899,
+    description: "Beautiful geode-inspired resin clock with golden numbers.", 
+    image: resinClock
+  },
+  { 
+    id: "k1", 
+    title: "Ocean Drop Keychain", 
+    category: "Keychains", 
+    price: 299, 
+    originalPrice: 399,
+    description: "Beautiful ocean-inspired resin keychain with shimmer.", 
+    image: KeyChain // Using existing image as placeholder
+  },
+  { 
+    id: "cs1", 
+    title: "Heart Calendar Coasters", 
+    category: "Coasters", 
+    price: 699, 
+    description: "Set of beautiful heart-shaped calendar coasters.", 
+    image: heartCoasters
+  },
+  { 
+    id: "j1", 
+    title: "Custom Resin Gift", 
+    category: "Jewelry", 
+    price: 499, 
+    originalPrice: 599,
+    description: "Elegant custom resin gift item.", 
+    image: customGift
+  },
+  { 
+    id: "a1", 
+    title: "Mini Photo Albums", 
+    category: "Albums", 
+    price: 899, 
+    description: "Handcrafted mini resin photo albums.", 
+    image: miniAlbums
+  }
+];
+
+// Config constants
+const CONFIG = {
+  SELLER_WHATSAPP_NUMBER: "918122853272",
+  INSTAGRAM_USERNAME: "_sky_choices_",
+  BRAND_NAME: "Sky Choices",
+  TAGLINE: "Resin crafts destination"
+};
+
+const CATEGORIES = ["All", "Frames", "Clocks", "Keychains", "Coasters", "Jewelry"];
+const INPUT_CLASS = "w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl border-2 border-sky-200 bg-white/90 text-sky-900 placeholder-sky-500/70 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent transition-all duration-200 text-sm sm:text-base";
+
+// Import components
+import Navigation from "./components/Navigation";
+import HeroSection from "./components/HeroSection";
+import AdminPanel from "./components/AdminPanel";
+import Filters from "./components/Filters";
+import ProductCard from "./components/ProductCard";
+import CartSidebar from "./components/CartSidebar";
+import CheckoutModal from "./components/CheckoutModal";
+import OrderToast from "./components/OrderToast";
+import Footer from "./components/Footer";
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// Custom hook for localStorage
+function useLocalStorage(key, initialValue) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item && item !== "undefined" ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error loading ${key} from localStorage:`, error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value) => {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error saving ${key} to localStorage:`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
 
 export default function App() {
-  // State
   const [products, setProducts] = useLocalStorage("sky_products", []);
   const [cart, setCart] = useLocalStorage("sky_cart", {});
   const [showAdmin, setShowAdmin] = useState(false);
@@ -36,17 +152,23 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
 
-  // Load initial products
+  // FORCE RESET - Clear old data and use only local images
   useEffect(() => {
+    console.log('🔄 FORCE RESET: Loading local images only');
+    
+    // Clear old localStorage data
+    localStorage.removeItem("sky_products");
+    localStorage.removeItem("sky_cart");
+    
     const timer = setTimeout(() => {
-      if (products.length === 0) {
-        setProducts(SAMPLE_PRODUCTS);
-      }
+      console.log('📦 Setting products with local images:', SAMPLE_PRODUCTS);
+      setProducts(SAMPLE_PRODUCTS);
+      setCart({});
       setIsLoading(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [products.length, setProducts]);
+  }, [setProducts]);
 
   // Cart functions
   function addToCart(productId) { 
@@ -73,10 +195,10 @@ export default function App() {
     setCartOpen(false);
   }
 
-  // Admin functions
+  // Admin functions - ONLY allow local image uploads
   function handleAdminSubmit(e) {
     e.preventDefault();
-    const { title, price, originalPrice, description, imageFile, imageURL, category } = adminForm;
+    const { title, price, originalPrice, description, imageFile, category } = adminForm;
     if (!title || !price) return alert("Please provide title and price.");
 
     function createProductWithImage(imgData) {
@@ -87,7 +209,7 @@ export default function App() {
         price: parseFloat(price), 
         originalPrice: originalPrice ? parseFloat(originalPrice) : undefined,
         description, 
-        image: imgData || imageURL || "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop" 
+        image: imgData || marriageFrame // Use local image as default
       };
       setProducts((prev) => [newP, ...prev]);
       setAdminForm({ 
@@ -148,7 +270,7 @@ export default function App() {
     ];
     
     const waText = encodeURIComponent(messageLines.join("\n"));
-    const waLink = `https://wa.me/918122853272?text=${waText}`;
+    const waLink = `https://wa.me/${CONFIG.SELLER_WHATSAPP_NUMBER}?text=${waText}`;
     window.open(waLink, "_blank");
     clearCart();
     setCheckoutOpen(false);
@@ -212,14 +334,12 @@ export default function App() {
               <span className="text-xs text-sky-700 bg-sky-100 px-2 py-1 rounded-full">
                 {filtered.length} items
               </span>
-              {products.length === 0 && (
-                <button 
-                  onClick={resetProducts}
-                  className="text-xs bg-amber-500 text-amber-950 px-2 py-1 rounded-lg hover:bg-amber-400 transition-colors"
-                >
-                  Load Products
-                </button>
-              )}
+              <button 
+                onClick={resetProducts}
+                className="text-xs bg-amber-500 text-amber-950 px-2 py-1 rounded-lg hover:bg-amber-400 transition-colors"
+              >
+                Reset Products
+              </button>
             </div>
           </div>
 
@@ -227,7 +347,7 @@ export default function App() {
             <div className="flex justify-center items-center py-8 sm:py-12">
               <div className="text-center">
                 <LoadingSpinner size="medium" />
-                <p className="mt-3 text-sky-700 text-sm">Loading products...</p>
+                <p className="mt-3 text-sky-700 text-sm">Loading local images...</p>
               </div>
             </div>
           ) : (
@@ -238,29 +358,16 @@ export default function App() {
                 ))}
               </div>
               
-              {filtered.length === 0 && products.length === 0 && (
+              {filtered.length === 0 && (
                 <div className="text-center py-8 sm:py-12">
                   <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">📦</div>
                   <h3 className="text-base sm:text-lg font-semibold text-sky-900 mb-1">No products available</h3>
-                  <p className="text-sky-700 max-w-md mx-auto text-xs sm:text-sm mb-3">
-                    Click below to load sample products with special offers!
-                  </p>
                   <button 
                     onClick={resetProducts}
                     className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 text-xs sm:text-sm"
                   >
-                    Load Sample Products
+                    Load Local Products
                   </button>
-                </div>
-              )}
-              
-              {filtered.length === 0 && products.length > 0 && (
-                <div className="text-center py-8 sm:py-12">
-                  <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">🔍</div>
-                  <h3 className="text-base sm:text-lg font-semibold text-sky-900 mb-1">No products found</h3>
-                  <p className="text-sky-700 max-w-md mx-auto text-xs sm:text-sm">
-                    Try different search terms or categories.
-                  </p>
                 </div>
               )}
             </>

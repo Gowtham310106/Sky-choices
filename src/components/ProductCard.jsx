@@ -4,10 +4,17 @@ import LoadingSpinner from './LoadingSpinner';
 
 function ProductCard({ product, onAddToCart }) {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   const discountPercent = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+
+  const handleImageError = () => {
+    console.log(`❌ Image failed to load: ${product.title}`);
+    setImageError(true);
+    setImageLoaded(true);
+  };
 
   return (
     <article className="group rounded-xl sm:rounded-2xl overflow-hidden bg-white/80 backdrop-blur border border-sky-100/80 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1">
@@ -30,25 +37,31 @@ function ProductCard({ product, onAddToCart }) {
       )}
       
       <div className="relative h-32 sm:h-36 bg-gradient-to-br from-sky-50 via-white to-sky-100 overflow-hidden">
-        {!imageLoaded && (
+        {!imageLoaded && !imageError && (
           <div className="absolute inset-0 flex items-center justify-center">
             <LoadingSpinner size="small" />
           </div>
         )}
-        {product.image ? (
+        
+        {!imageError ? (
           <img 
             src={product.image} 
             alt={product.title}
             className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            onLoad={() => setImageLoaded(true)}
-            onError={(e) => {
-              e.target.src = "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop";
+            onLoad={() => {
+              console.log(`✅ Image loaded: ${product.title}`);
+              setImageLoaded(true);
             }}
+            onError={handleImageError}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-sky-600">
-            <div className="text-center">
-              <div className="text-2xl mb-1">🖼️</div>
+          <div className="w-full h-full flex flex-col items-center justify-center text-sky-600 bg-sky-50 p-2">
+            <div className="text-2xl mb-1">🖼️</div>
+            <div className="text-xs text-sky-500 text-center">
+              Image not available
+            </div>
+            <div className="text-[8px] text-sky-400 mt-1">
+              {product.title}
             </div>
           </div>
         )}

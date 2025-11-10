@@ -1,3 +1,13 @@
+// Import your local images
+import marriageFrame from "../assets/Marriage_memo.png";
+import petFrame from "../assets/frame_1.png";
+import babyFrame from "../assets/baby_memories.png";
+import resinClock from "../assets/clock_2.png";
+import heartCoasters from "../assets/heart_calender.png";
+import customGift from "../assets/custom_gift.png";
+import miniAlbums from "../assets/mini_albums.png";
+//import keychainImage from "../assets/keychain_1.png"; // If you have this, or use a placeholder
+
 export const CONFIG = {
   SELLER_WHATSAPP_NUMBER: "918122853272",
   INSTAGRAM_USERNAME: "_sky_choices_",
@@ -12,105 +22,71 @@ export const INPUT_CLASS = "w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:round
 export const SAMPLE_PRODUCTS = [
   { 
     id: "f1", 
-    title: "Ocean Wave Frame", 
+    title: "Marriage Memory Frame", 
     category: "Frames", 
     price: 1299, 
     originalPrice: 1499,
-    description: "Resin frame with ocean blue pour and shell accents.", 
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop" 
+    description: "Elegant resin frame perfect for wedding memories.", 
+    image: marriageFrame
   },
   { 
     id: "f2", 
-    title: "Gold Leaf Frame", 
+    title: "Pet Memory Frame", 
     category: "Frames", 
     price: 899, 
     originalPrice: 1099,
-    description: "Clear resin with gold leaf detailing.", 
-    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "c1", 
-    title: "Marbled Wall Clock", 
-    category: "Clocks", 
-    price: 2499, 
-    originalPrice: 2799,
-    description: "Silent movement, marble swirl design.", 
-    image: "https://images.unsplash.com/photo-1508963493744-76fce69379c0?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "c2", 
-    title: "Geode Desk Clock", 
-    category: "Clocks", 
-    price: 1799, 
-    originalPrice: 1999,
-    description: "Geode crystal effect with gold accents.", 
-    image: "https://images.unsplash.com/photo-1518133835872-cc4eev-0d6b7c3f9c8a?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "k1", 
-    title: "Initial Keychain", 
-    category: "Keychains", 
-    price: 199, 
-    description: "Custom initial with glitter sealed in resin.", 
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "k2", 
-    title: "Ocean Drop Keychain", 
-    category: "Keychains", 
-    price: 249, 
-    description: "Ocean blue with tiny shells inside.", 
-    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "cs1", 
-    title: "Marble Coasters Set", 
-    category: "Coasters", 
-    price: 749, 
-    originalPrice: 899,
-    description: "Set of 4 marble coasters with cork.", 
-    image: "https://images.unsplash.com/photo-1508963493744-76fce69379c0?w=400&h=300&fit=crop" 
-  },
-  { 
-    id: "j1", 
-    title: "Flower Pendant", 
-    category: "Jewelry", 
-    price: 399, 
-    description: "Pressed flowers in clear resin pendant.", 
-    image: "https://images.unsplash.com/photo-1518133835872-cc4eev-0d6b7c3f9c8a?w=400&h=300&fit=crop" 
+    description: "Cherish your pet memories in this beautiful frame.", 
+    image: petFrame
   },
   { 
     id: "f3", 
-    title: "Mini Photo Frame", 
+    title: "Baby Memories Frame", 
     category: "Frames", 
-    price: 599, 
-    description: "Small resin frame for desk photos.", 
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop" 
+    price: 999, 
+    description: "Preserve precious baby moments in resin.", 
+    image: babyFrame
   },
   { 
-    id: "k3", 
-    title: "Crystal Keychain", 
-    category: "Keychains", 
-    price: 299, 
-    originalPrice: 399,
-    description: "Crystal clear with colorful flakes.", 
-    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop" 
+    id: "c1", 
+    title: "Geode Resin Desk Clock", 
+    category: "Clocks", 
+    price: 1599, 
+    originalPrice: 1899,
+    description: "Beautiful geode-inspired resin clock with golden numbers.", 
+    image: resinClock
   },
+//   { 
+//     id: "k1", 
+//     title: "Ocean Drop Keychain", 
+//     category: "Keychains", 
+//     price: 299, 
+//     originalPrice: 399,
+//     description: "Beautiful ocean-inspired resin keychain with shimmer.", 
+//     image: keychainImage || "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=300&fit=crop"
+//   },
   { 
-    id: "cs2", 
-    title: "Geode Coasters", 
+    id: "cs1", 
+    title: "Heart Calendar Coasters", 
     category: "Coasters", 
-    price: 849, 
-    description: "Geode style coasters set of 4.", 
-    image: "https://images.unsplash.com/photo-1508963493744-76fce69379c0?w=400&h=300&fit=crop" 
+    price: 699, 
+    description: "Set of beautiful heart-shaped calendar coasters.", 
+    image: heartCoasters
   },
   { 
-    id: "j2", 
-    title: "Resin Earrings", 
+    id: "j1", 
+    title: "Custom Resin Gift", 
     category: "Jewelry", 
-    price: 349, 
-    originalPrice: 449,
-    description: "Handmade resin drop earrings.", 
-    image: "https://images.unsplash.com/photo-1518133835872-cc4eev-0d6b7c3f9c8a?w=400&h=300&fit=crop" 
+    price: 499, 
+    originalPrice: 599,
+    description: "Elegant custom resin gift item.", 
+    image: customGift
   },
+  { 
+    id: "a1", 
+    title: "Mini Photo Albums", 
+    category: "Albums", 
+    price: 899, 
+    description: "Handcrafted mini resin photo albums.", 
+    image: miniAlbums
+  }
 ];
