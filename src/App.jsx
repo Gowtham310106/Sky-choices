@@ -152,23 +152,17 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
 
-  // FORCE RESET - Clear old data and use only local images
-  useEffect(() => {
-    console.log('🔄 FORCE RESET: Loading local images only');
-    
-    // Clear old localStorage data
-    localStorage.removeItem("sky_products");
-    localStorage.removeItem("sky_cart");
-    
-    const timer = setTimeout(() => {
-      console.log('📦 Setting products with local images:', SAMPLE_PRODUCTS);
+  // Load initial products - RUNS ONLY ONCE
+useEffect(() => {
+  const timer = setTimeout(() => {
+    if (products.length === 0) {
       setProducts(SAMPLE_PRODUCTS);
-      setCart({});
-      setIsLoading(false);
-    }, 500);
+    }
+    setIsLoading(false);
+  }, 500);
 
-    return () => clearTimeout(timer);
-  }, [setProducts]);
+  return () => clearTimeout(timer);
+}, [setProducts, products.length]);
 
   // Cart functions
   function addToCart(productId) { 
