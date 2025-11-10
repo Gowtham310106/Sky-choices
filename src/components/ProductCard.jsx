@@ -2,19 +2,12 @@ import React, { useState } from 'react';
 import { CONFIG } from '../data/constants';
 import LoadingSpinner from './LoadingSpinner';
 
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product, onAddToCart, onProductClick }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   
   const discountPercent = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
-
-  const handleImageError = () => {
-    console.log(`❌ Image failed to load: ${product.title}`);
-    setImageError(true);
-    setImageLoaded(true);
-  };
 
   return (
     <article className="group rounded-xl sm:rounded-2xl overflow-hidden bg-white/80 backdrop-blur border border-sky-100/80 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1">
@@ -27,41 +20,27 @@ function ProductCard({ product, onAddToCart }) {
         </div>
       )}
       
-      {/* Premium badge for expensive items */}
-      {product.price > 2000 && !discountPercent && (
-        <div className="absolute top-2 left-2 z-10">
-          <span className="px-1.5 py-0.5 text-xs font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-amber-950 rounded-full shadow">
-            Premium
-          </span>
-        </div>
-      )}
-      
-      <div className="relative h-32 sm:h-36 bg-gradient-to-br from-sky-50 via-white to-sky-100 overflow-hidden">
-        {!imageLoaded && !imageError && (
+      {/* Product Image - Clickable */}
+      <div 
+        className="relative h-32 sm:h-36 bg-gradient-to-br from-sky-50 via-white to-sky-100 overflow-hidden cursor-pointer"
+        onClick={onProductClick}
+      >
+        {!imageLoaded && (
           <div className="absolute inset-0 flex items-center justify-center">
             <LoadingSpinner size="small" />
           </div>
         )}
-        
-        {!imageError ? (
+        {product.image ? (
           <img 
             src={product.image} 
             alt={product.title}
             className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            onLoad={() => {
-              console.log(`✅ Image loaded: ${product.title}`);
-              setImageLoaded(true);
-            }}
-            onError={handleImageError}
+            onLoad={() => setImageLoaded(true)}
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-sky-600 bg-sky-50 p-2">
-            <div className="text-2xl mb-1">🖼️</div>
-            <div className="text-xs text-sky-500 text-center">
-              Image not available
-            </div>
-            <div className="text-[8px] text-sky-400 mt-1">
-              {product.title}
+          <div className="w-full h-full flex items-center justify-center text-sky-600">
+            <div className="text-center">
+              <div className="text-2xl mb-1">🖼️</div>
             </div>
           </div>
         )}
@@ -74,7 +53,11 @@ function ProductCard({ product, onAddToCart }) {
           </span>
         </div>
         
-        <h3 className="text-sm font-semibold text-sky-950 mb-1 line-clamp-1 leading-tight">
+        {/* Product Title - Clickable */}
+        <h3 
+          className="text-sm font-semibold text-sky-950 mb-1 line-clamp-1 leading-tight cursor-pointer hover:text-sky-700 transition-colors"
+          onClick={onProductClick}
+        >
           {product.title}
         </h3>
         

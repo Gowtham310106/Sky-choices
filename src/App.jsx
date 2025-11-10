@@ -9,6 +9,7 @@ import heartCoasters from "./assets/heart_calender.png";
 import customGift from "./assets/custom_gift.png";
 import miniAlbums from "./assets/mini_albums.png";
 import KeyChain from "./assets/key_chain.png";
+import ProductDetailsModal from './components/ProductDetailsModal';
 
 
 // Sample products with ONLY local images
@@ -151,7 +152,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
-
+  const [selectedProduct, setSelectedProduct] = useState(null);
   // Load initial products - RUNS ONLY ONCE
 useEffect(() => {
   const timer = setTimeout(() => {
@@ -347,9 +348,14 @@ useEffect(() => {
           ) : (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-                {filtered.map((p) => (
-                  <ProductCard key={p.id} product={p} onAddToCart={addToCart} />
-                ))}
+               {filtered.map((p) => (
+  <ProductCard 
+    key={p.id} 
+    product={p} 
+    onAddToCart={addToCart}
+    onProductClick={() => setSelectedProduct(p)}
+  />
+))}
               </div>
               
               {filtered.length === 0 && (
@@ -389,6 +395,13 @@ useEffect(() => {
         />
 
         <OrderToast orderInfo={orderInfo} />
+
+        <ProductDetailsModal 
+  selectedProduct={selectedProduct}
+  onClose={() => setSelectedProduct(null)}
+  products={products}
+  onAddToCart={addToCart}
+/>
       </main>
 
       <Footer />
